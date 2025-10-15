@@ -1,0 +1,96 @@
+@model IEnumerable<Inventory.Models.Product>
+
+@{
+    ViewData["Title"] = "Product List";
+}
+
+<link href="~/css/product.css" rel="stylesheet">
+
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+        <h2 class="text-primary">📦 Product Inventory</h2>
+        <input type="text" id="searchInput" class="form-control w-auto" placeholder="Search by Name or Quantity...">
+        <a href="@Url.Action("Add", "Product")" class="btn btn-success mt-2 mt-sm-0">➕ Add Product</a>
+    </div>
+
+    <div id="notificationArea"></div>
+
+    @if (ViewBag.LowStockList != null && ViewBag.LowStockList.Count > 0)
+    {
+        <div class="alert alert-warning shadow-sm p-3 rounded">
+            <strong>⚠️ Low Stock Alert!</strong>
+            <ul class="mb-0 mt-2">
+                @foreach (var item in ViewBag.LowStockList)
+                {
+                    <li>@item.ProductName - only @item.Quantity left!</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <div class="table-responsive mt-4">
+        <table class="table table-striped table-hover table-bordered align-middle shadow-sm" id="productTable">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr class="@(p.Quantity <= 5 ? "table-warning" : "")">
+                        <td>@p.ProductID</td>
+                        <td>@p.ProductName</td>
+                        <td>@p.Quantity</td>
+                        <td>
+                            <div class="action-buttons d-flex flex-wrap gap-1">
+                                <a href="@Url.Action("Edit", "Product", new { id = p.ProductID })" class="btn btn-primary btn-sm flex-fill">✏️ Edit</a>
+                                <a href="@Url.Action("Delete", "Product", new { id = p.ProductID })" class="btn btn-danger btn-sm flex-fill" onclick="return confirm('Are you sure you want to delete this product?');">🗑️ Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.11/signalr.min.js"></script>
+<script>
+    // Live Search
+    const searchInput = document.getElementById('searchInput');
+    const table = document.getElementById('productTable').getElementsByTagName('tbody')[0];
+
+    searchInput.addEventListener('keyup', function () {
+        const filter = this.value.toLowerCase();
+        const rows = table.getElementsByTagName('tr');
+        for (let i = 0; i < rows.length; i++) {
+            const nameCell = rows[i].getElementsByTagName('td')[1];
+            const qtyCell = rows[i].getElementsByTagName('td')[2];
+            const nameText = nameCell ? nameCell.textContent.toLowerCase() : '';
+            const qtyText = qtyCell ? qtyCell.textContent.toLowerCase() : '';
+            rows[i].style.display = (nameText.includes(filter) || qtyText.includes(filter)) ? '' : 'none';
+        }
+    });
+
+    // SignalR notifications
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/notificationHub")
+        .build();
+
+    connection.on("ReceiveNotification", function (message) {
+        const area = document.getElementById("notificationArea");
+        const notif = document.createElement("div");
+        notif.className = "alert alert-info mt-2";
+        notif.innerHTML = message;
+        area.prepend(notif);
+
+        // Auto-remove after 5 sec
+        setTimeout(() => notif.remove(), 5000);
+    });
+
+    connection.start().catch(err => console.error(err));
+</script>

@@ -1,0 +1,53 @@
+body {
+    background-color: #f5f7fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h2 {
+    font-weight: 600;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #e2f0ff;
+    transition: background-color 0.3s ease;
+}
+
+.alert {
+    font-size: 1rem;
+}
+
+/* Action buttons styling */
+.action-buttons a {
+    text-align: center;
+}
+
+/* Responsive buttons for mobile */
+@media (max-width: 576px) {
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .action-buttons a {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    #searchInput {
+        width: 100% !important;
+        margin-top: 5px;
+    }
+}
+
+/* Default for PC */
+.search-box {
+    width: 250px; /* adjust as needed */
+    margin-right: 10px;
+}
+
+/* Responsive for mobile */
+@media (max-width: 576px) {
+    .search-box {
+        width: 100% !important;
+        margin: 5px 0;
+    }
+}

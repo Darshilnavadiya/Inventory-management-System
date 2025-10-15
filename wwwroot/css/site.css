@@ -1,0 +1,93 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* Base body styles */
+body {
+    background-color: #f5f7fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Headings */
+h2 {
+    font-weight: 600;
+}
+
+/* Table hover effect */
+.table-hover tbody tr:hover {
+    background-color: #e2f0ff;
+    transition: background-color 0.3s ease;
+}
+
+/* Low-stock alert */
+.alert {
+    font-size: 1rem;
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.action-buttons a {
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+/* Responsive styles for mobile (smaller than 576px) */
+@media (max-width: 576px) {
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .action-buttons a {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    form.d-flex {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    form.d-flex input,
+    form.d-flex button {
+        width: 100%;
+    }
+}
+
+/* Add some spacing for container elements */
+.container {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}

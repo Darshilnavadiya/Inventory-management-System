@@ -1,0 +1,33 @@
+@model Inventory.Models.Product
+
+
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<div class="container my-5">
+    <h2 class="mb-4">✏️ Edit Product</h2>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <form method="post" class="w-100 w-md-50">
+        <!-- Hidden field for ProductID -->
+        <input type="hidden" name="ProductID" value="@Model.ProductID" />
+
+        <div class="mb-3">
+            <label class="form-label">Product Name</label>
+            <input type="text" name="ProductName" class="form-control" value="@Model.ProductName" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Quantity</label>
+            <input type="number" name="Quantity" class="form-control" value="@Model.Quantity" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">💾 Update</button>
+        <a href="@Url.Action("Index", "Product")" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
